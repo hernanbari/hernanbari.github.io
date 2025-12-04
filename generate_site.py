@@ -453,17 +453,36 @@ def create_style(theme_key):
         .job-header {{
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             margin-bottom: 10px;
             flex-wrap: wrap;
             gap: 8px;
         }}
 
+        .job-title-row {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }}
+
+        .academia-title-col {{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }}
+
         .job h4 {{
             font-size: 17px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 0;
             color: var(--text-color);
+            display: inline;
+        }}
+
+        .job-separator {{
+            color: var(--text-secondary);
+            font-weight: 400;
         }}
 
         .job-title {{
@@ -471,6 +490,7 @@ def create_style(theme_key):
             color: var(--accent-color);
             font-weight: 600;
             margin-bottom: 0;
+            display: inline;
         }}
 
         .job-date {{
@@ -657,6 +677,25 @@ def create_style(theme_key):
             .two-column {{
                 grid-template-columns: 1fr;
             }}
+
+            /* Make experience cards vertical on mobile */
+            .experience-card .job-title-row {{
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }}
+
+            .experience-card .job-separator {{
+                display: none;
+            }}
+
+            .experience-card .job-title {{
+                display: block;
+            }}
+
+            .experience-card .job-header {{
+                align-items: flex-start;
+            }}
         }}
     """)
 
@@ -771,6 +810,62 @@ def create_script():
     """)
 
 
+def create_job_card(job):
+    """Create a job card from job data"""
+    if "bullets" in job:
+        # Job with bullet points
+        return Div(
+            Div(
+                Div(
+                    H4(job["company"]),
+                    Span(" • ", cls="job-separator"),
+                    Span(job["title"], cls="job-title"),
+                    cls="job-title-row"
+                ),
+                P(job["date"], cls="job-date"),
+                cls="job-header"
+            ),
+            Ul(
+                *[Li(bullet) for bullet in job["bullets"]],
+                cls="job-bullets"
+            ),
+            cls="job experience-card"
+        )
+    else:
+        # Job with description
+        return Div(
+            Div(
+                Div(
+                    H4(job["company"]),
+                    Span(" • ", cls="job-separator"),
+                    Span(job["title"], cls="job-title"),
+                    cls="job-title-row"
+                ),
+                P(job["date"], cls="job-date"),
+                cls="job-header"
+            ),
+            P(job["description"], cls="job-description"),
+            cls="job experience-card"
+        )
+
+
+def create_academia_card(item):
+    """Create an academia/community card from item data"""
+    return Div(
+        Div(
+            Div(
+                H4(item["title"]),
+                P(item["subtitle"], cls="job-title"),
+                cls="academia-title-col"
+            ),
+            P(item["date"], cls="job-date") if item["date"] else None,
+            cls="job-header"
+        ),
+        P(item["description"], cls="job-description"),
+        cls="job"
+    )
+
+
 def generate_page(theme_key):
     """Generate a complete HTML page for a theme"""
     
@@ -785,35 +880,39 @@ def generate_page(theme_key):
             Div(
                 # Header
                 Header(
-                    # Left: Name
+                    # Left: Name box (25%)
                     Div(
                         Div(
-                            H1("HERNÁN BARIJHOFF"),
-                            P("MS CS | MLE | EA | Founder", cls="subtitle"),
+                            H1(CONTENT["name"]),
+                            P(CONTENT["subtitle"], cls="subtitle"),
                             cls="header-box"
                         ),
                         cls="header-left"
                     ),
-                    # Center: Tagline and Contact
+                    # Right: Hero content + Toggle (75%)
                     Div(
-                        P(
-                            "Building mental health tech that ",
-                            Span("scales empathy", cls="tagline-emphasis"),
-                            cls="tagline"
-                        ),
+                        # Hero content (tagline + contact)
                         Div(
-                            A("hernanbarijhoff@gmail.com", href="mailto:hernanbarijhoff@gmail.com"),
-                            A("LinkedIn", href="https://www.linkedin.com/in/hernanbarijhoff/", target="_blank"),
-                            A("mindappterapia.com", href="https://mindappterapia.com", target="_blank"),
-                            cls="contact-links"
+                            P(
+                                CONTENT["tagline"],
+                                Span(CONTENT["tagline_emphasis"], cls="tagline-emphasis"),
+                                cls="tagline"
+                            ),
+                            Div(
+                                A(CONTENT["email"], href=f"mailto:{CONTENT['email']}"),
+                                A("LinkedIn", href=CONTENT["linkedin_url"], target="_blank"),
+                                A("mindappterapia.com", href=CONTENT["website_url"], target="_blank"),
+                                cls="contact-links"
+                            ),
+                            cls="hero-content"
+                        ),
+                        # Dark mode toggle
+                        Div(
+                            Span("Dark Mode", cls="toggle-label-top"),
+                            Div(cls="toggle-switch", id="darkModeToggle"),
+                            cls="toggle-container"
                         ),
                         cls="header-center"
-                    ),
-                    # Right: Dark Mode Toggle
-                    Div(
-                        Span("Dark Mode", cls="toggle-label-top"),
-                        Div(cls="toggle-switch", id="darkModeToggle"),
-                        cls="toggle-container"
                     ),
                 ),
                 
@@ -821,11 +920,9 @@ def generate_page(theme_key):
                 Main(
                     # Who I Am Section
                     Section(
-                        H2("Who I Am", cls="section-header"),
+                        H2(CONTENT["about"]["title"], cls="section-header"),
                         Div(
-                            P("I'm not your typical engineer. I build things that matter."),
-                            P("After years in ML and data science at companies like Mercado Libre and Emi Labs, I founded MindApp Terapia because I saw a gap: mental health care that's both accessible and maintains rigorous safety standards. Technology can scale empathy, but only if we build it with conviction and EA values at the core."),
-                            P("I care deeply about AI safety, effective altruism, and building products that genuinely improve people's wellbeing. I'm not here to optimize metrics—I'm here to transform reality."),
+                            *[P(para) for para in CONTENT["about"]["paragraphs"]],
                             id="aboutContent"
                         ),
                         id="about"
@@ -847,151 +944,21 @@ def generate_page(theme_key):
                         Div(
                             # Mobile Tab Content - Who I Am
                             Div(
-                                P("I'm not your typical engineer. I build things that matter."),
-                                P("After years in ML and data science at companies like Mercado Libre and Emi Labs, I founded MindApp Terapia because I saw a gap: mental health care that's both accessible and maintains rigorous safety standards. Technology can scale empathy, but only if we build it with conviction and EA values at the core."),
-                                P("I care deeply about AI safety, effective altruism, and building products that genuinely improve people's wellbeing. I'm not here to optimize metrics—I'm here to transform reality."),
+                                *[P(para) for para in CONTENT["about"]["paragraphs"]],
                                 cls="tab-content active",
                                 id="tab-about"
                             ),
                             
                             # Mobile Tab Content - Experience
                             Div(
-                                # MindApp
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("MindApp Terapia"),
-                                            P("Co-Founder & CEO", cls="job-title"),
-                                        ),
-                                        P("Jan 2023 — Present", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    Ul(
-                                        Li("[Placeholder: Built therapy platform serving X users]"),
-                                        Li("[Placeholder: Developed safety protocols for mental health at scale]"),
-                                        Li("[Placeholder: Technical achievement about ML/matching/scale]"),
-                                        Li("[Placeholder: Impact on user wellbeing metrics]"),
-                                        cls="job-bullets"
-                                    ),
-                                    cls="job"
-                                ),
-                                # Gap Year
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Startup Exploration"),
-                                            P("Independent", cls="job-title"),
-                                        ),
-                                        P("2022", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    P("[Placeholder: Evaluated multiple startup opportunities including fintech and digital health platforms. This exploration period informed my decision to focus on mental health accessibility and safety—leading to MindApp's founding.]", cls="job-description"),
-                                    cls="job"
-                                ),
-                                # Emi Labs
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Emi Labs"),
-                                            P("Sr Machine Learning Engineer", cls="job-title"),
-                                        ),
-                                        P("Oct 2019 — Jan 2022", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    Ul(
-                                        Li("Built Emi, an NLP chatbot handling thousands of recruitment conversations with empathy at scale"),
-                                        Li("Designed data architecture prioritizing privacy and security for sensitive candidate information"),
-                                        Li("Scaled system to handle interview scheduling and recruitment workflows for multiple clients"),
-                                        cls="job-bullets"
-                                    ),
-                                    cls="job"
-                                ),
-                                # Mercado Libre
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Mercado Libre"),
-                                            P("Data Scientist (Junior → Senior)", cls="job-title"),
-                                        ),
-                                        P("Dec 2016 — Oct 2019", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    Ul(
-                                        Li("Built recommender systems using collaborative filtering, serving millions of users daily"),
-                                        Li("Developed fraud prevention models (CV + NLP) with 400% improvement over baseline"),
-                                        Li("Created resilient ETL pipelines and serving infrastructure at massive scale (Luigi + Hive + AWS)"),
-                                        cls="job-bullets"
-                                    ),
-                                    cls="job"
-                                ),
+                                *[create_job_card(job) for job in CONTENT["experience"]],
                                 cls="tab-content",
                                 id="tab-experience"
                             ),
                             
                             # Mobile Tab Content - Academia
                             Div(
-                                # NeurIPS
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("NeurIPS Presentation"),
-                                            P("ML Open Source Software Workshop", cls="job-title"),
-                                        ),
-                                        P("2018", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    P("[Placeholder: Presented PyLissom at NeurIPS - modeling computational maps of the visual cortex in PyTorch]", cls="job-description"),
-                                    cls="job"
-                                ),
-                                # Master's
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Universidad de Buenos Aires"),
-                                            P("Master's in Computer Science", cls="job-title"),
-                                        ),
-                                        P("2013 — 2018", cls="job-date"),
-                                        cls="job-header"
-                                    ),
-                                    P("Thesis: PyLissom - A tool for modeling computational maps of the visual cortex in PyTorch", cls="job-description"),
-                                    cls="job"
-                                ),
-                                # DS Argentina
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Data Science Argentina"),
-                                            P("Meetup Organizer", cls="job-title"),
-                                        ),
-                                        cls="job-header"
-                                    ),
-                                    P("[Placeholder: Organized community meetups bringing together data scientists and ML practitioners in Buenos Aires]", cls="job-description"),
-                                    cls="job"
-                                ),
-                                # EA
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("EA @ Buenos Aires"),
-                                            P("Member", cls="job-title"),
-                                        ),
-                                        cls="job-header"
-                                    ),
-                                    P("[Placeholder: Active member of the Effective Altruism community in Buenos Aires, focused on AI safety and global health]", cls="job-description"),
-                                    cls="job"
-                                ),
-                                # Patch Adams
-                                Div(
-                                    Div(
-                                        Div(
-                                            H4("Patch Adams Volunteer"),
-                                            P("Volunteer", cls="job-title"),
-                                        ),
-                                        cls="job-header"
-                                    ),
-                                    P("[Placeholder: Volunteered with Patch Adams organization, bringing joy and human connection to hospital patients]", cls="job-description"),
-                                    cls="job"
-                                ),
+                                *[create_academia_card(item) for item in CONTENT["academia"]],
                                 cls="tab-content",
                                 id="tab-academia"
                             ),
@@ -1001,141 +968,13 @@ def generate_page(theme_key):
                                 # Left Column - What I've Built
                                 Div(
                                     H3("What I've Built"),
-                                    # MindApp
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("MindApp Terapia"),
-                                                P("Co-Founder & CEO", cls="job-title"),
-                                            ),
-                                            P("Jan 2023 — Present", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        Ul(
-                                            Li("[Placeholder: Built therapy platform serving X users]"),
-                                            Li("[Placeholder: Developed safety protocols for mental health at scale]"),
-                                            Li("[Placeholder: Technical achievement about ML/matching/scale]"),
-                                            Li("[Placeholder: Impact on user wellbeing metrics]"),
-                                            cls="job-bullets"
-                                        ),
-                                        cls="job"
-                                    ),
-                                    # Gap Year
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Startup Exploration"),
-                                                P("Independent", cls="job-title"),
-                                            ),
-                                            P("2022", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        P("[Placeholder: Evaluated multiple startup opportunities including fintech and digital health platforms. This exploration period informed my decision to focus on mental health accessibility and safety—leading to MindApp's founding.]", cls="job-description"),
-                                        cls="job"
-                                    ),
-                                    # Emi Labs
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Emi Labs"),
-                                                P("Sr Machine Learning Engineer", cls="job-title"),
-                                            ),
-                                            P("Oct 2019 — Jan 2022", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        Ul(
-                                            Li("Built Emi, an NLP chatbot handling thousands of recruitment conversations with empathy at scale"),
-                                            Li("Designed data architecture prioritizing privacy and security for sensitive candidate information"),
-                                            Li("Scaled system to handle interview scheduling and recruitment workflows for multiple clients"),
-                                            cls="job-bullets"
-                                        ),
-                                        cls="job"
-                                    ),
-                                    # Mercado Libre
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Mercado Libre"),
-                                                P("Data Scientist (Junior → Senior)", cls="job-title"),
-                                            ),
-                                            P("Dec 2016 — Oct 2019", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        Ul(
-                                            Li("Built recommender systems using collaborative filtering, serving millions of users daily"),
-                                            Li("Developed fraud prevention models (CV + NLP) with 400% improvement over baseline"),
-                                            Li("Created resilient ETL pipelines and serving infrastructure at massive scale (Luigi + Hive + AWS)"),
-                                            cls="job-bullets"
-                                        ),
-                                        cls="job"
-                                    ),
+                                    *[create_job_card(job) for job in CONTENT["experience"]],
                                     cls="column"
                                 ),
-                                # Right Column - Academia
+                                # Right Column - Academia & Community
                                 Div(
                                     H3("Academia & Community"),
-                                    # NeurIPS
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("NeurIPS Presentation"),
-                                                P("ML Open Source Software Workshop", cls="job-title"),
-                                            ),
-                                            P("2018", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        P("[Placeholder: Presented PyLissom at NeurIPS - modeling computational maps of the visual cortex in PyTorch]", cls="job-description"),
-                                        cls="job"
-                                    ),
-                                    # Master's
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Universidad de Buenos Aires"),
-                                                P("Master's in Computer Science", cls="job-title"),
-                                            ),
-                                            P("2013 — 2018", cls="job-date"),
-                                            cls="job-header"
-                                        ),
-                                        P("Thesis: PyLissom - A tool for modeling computational maps of the visual cortex in PyTorch", cls="job-description"),
-                                        cls="job"
-                                    ),
-                                    # DS Argentina
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Data Science Argentina"),
-                                                P("Meetup Organizer", cls="job-title"),
-                                            ),
-                                            cls="job-header"
-                                        ),
-                                        P("[Placeholder: Organized community meetups bringing together data scientists and ML practitioners in Buenos Aires]", cls="job-description"),
-                                        cls="job"
-                                    ),
-                                    # EA
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("EA @ Buenos Aires"),
-                                                P("Member", cls="job-title"),
-                                            ),
-                                            cls="job-header"
-                                        ),
-                                        P("[Placeholder: Active member of the Effective Altruism community in Buenos Aires, focused on AI safety and global health]", cls="job-description"),
-                                        cls="job"
-                                    ),
-                                    # Patch Adams
-                                    Div(
-                                        Div(
-                                            Div(
-                                                H4("Patch Adams Volunteer"),
-                                                P("Volunteer", cls="job-title"),
-                                            ),
-                                            cls="job-header"
-                                        ),
-                                        P("[Placeholder: Volunteered with Patch Adams organization, bringing joy and human connection to hospital patients]", cls="job-description"),
-                                        cls="job"
-                                    ),
+                                    *[create_academia_card(item) for item in CONTENT["academia"]],
                                     cls="column"
                                 ),
                                 cls="two-column",
