@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hernán Barijhoff</title>
+    <style>
+        :root[data-theme="light"] {
+            --bg-color: #f8f9fb;
+            --bg-secondary: #f8f9fb;
+            --text-color: #1a1a1a;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --accent-color: #5a7099;
+            --accent-hover: #5a7099;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #1a1d24;
+            --bg-secondary: #242831;
+            --text-color: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --border-color: #333333;
+            --accent-color: #a8b8d4;
+            --accent-hover: #8fa3c2;
+            --card-bg: #242831;
+            --card-border: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 40px;
+            display: grid;
+            grid-template-columns: 25% 1fr;
+            align-items: start;
+            gap: 40px;
+        }
+
+        .header-left {
+            justify-self: start;
+        }
+
+        .header-box {
+            display: inline-block;
+            border: 2px solid var(--accent-color);
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: var(--bg-secondary);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-center {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 20px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: center;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .contact-links a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .contact-links a:hover {
+            opacity: 0.7;
+        }
+
+        .tagline {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        .tagline-emphasis {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 20px;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 17px;
+            transition: all 0.2s;
+        }
+
+        .hero-link:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toggle-label-top {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: var(--border-color);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-color);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(30px);
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        #about {
+            display: block;
+        }
+
+        .section-header {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header::before {
+            content: "→";
+            color: var(--accent-color);
+            font-size: 24px;
+        }
+
+        /* About Section */
+        #aboutContent p {
+            font-size: 15px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        #aboutContent p:first-child {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        /* Mobile Tabs */
+        .mobile-tabs {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 12px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .tab-button.active {
+            color: var(--accent-color);
+            border-bottom-color: var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (min-width: 901px) {
+            .tab-content {
+                display: none !important;
+            }
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .column h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .column h3::before {
+            content: "→";
+            color: var(--accent-color);
+            font-size: 20px;
+        }
+
+        /* Job Cards */
+        .job {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-left: 3px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .job:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transform: translateX(2px);
+        }
+
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .job-title-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .academia-title-col {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .job h4 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 0;
+            color: var(--text-color);
+            display: inline;
+        }
+
+        .job-separator {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .job-title {
+            font-size: 14px;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 0;
+            display: inline;
+        }
+
+        .job-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        .job-bullets {
+            list-style: none;
+            padding: 0;
+        }
+
+        .job-bullets li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .job-bullets li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .job-description {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* Nerdy Timeline */
+        .nerdy-timeline {
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-secondary) 100%);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 28px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nerdy-timeline::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: var(--accent-color);
+        }
+
+        .nerdy-timeline h4 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 16px;
+        }
+
+        .timeline-description {
+            margin-top: 12px;
+            font-size: 17px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        /* Footer with toggles */
+        footer {
+            border-top: 2px solid var(--border-color);
+            padding-top: 40px;
+            margin-top: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-toggles {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .two-column {
+                display: none;
+            }
+
+            .column {
+                display: none;
+            }
+
+            .mobile-tabs {
+                display: block;
+            }
+
+            #about {
+                display: none;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            header {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                margin-bottom: 30px;
+                gap: 15px;
+            }
+
+            .header-left {
+                justify-self: auto;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .header-box {
+                padding: 10px 20px;
+                flex: 1;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .header-center {
+                order: 2;
+            }
+
+            .toggle-container {
+                display: none;
+            }
+
+            .contact-links {
+                flex-direction: row;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .tagline {
+                font-size: 15px;
+            }
+
+            .section-header {
+                font-size: 20px;
+            }
+
+            .job {
+                padding: 14px;
+            }
+
+            .job h4 {
+                font-size: 16px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            /* Make experience cards vertical on mobile */
+            .experience-card .job-title-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .experience-card .job-separator {
+                display: none;
+            }
+
+            .experience-card .job-title {
+                display: block;
+            }
+
+            .experience-card .job-header {
+                align-items: flex-start;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-left">
+          <div class="header-box">
+            <h1>HERNÁN BARIJHOFF</h1>
+            <p class="subtitle">MS CS | MLE | EA | Founder</p>
+          </div>
+        </div>
+        <div class="header-center">
+          <div class="hero-content">
+            <p class="tagline">
+Building mental health tech that <span class="tagline-emphasis">scales empathy</span>            </p>
+            <div class="contact-links">
+<a href="mailto:hernanbarijhoff@gmail.com">hernanbarijhoff@gmail.com</a><a href="https://www.linkedin.com/in/hernanbarijhoff/" target="_blank">LinkedIn</a><a href="https://mindappterapia.com" target="_blank">mindappterapia.com</a>            </div>
+          </div>
+          <div class="toggle-container">
+<span class="toggle-label-top">Dark Mode</span>            <div id="darkModeToggle" class="toggle-switch"></div>
+          </div>
+        </div>
+      </header>
+<main>        <section id="about">
+          <h2 class="section-header">Who I Am</h2>
+          <div id="aboutContent">
+            <p>I'm not your typical engineer. I build things that matter.</p>
+            <p>After years in ML and data science at companies like Mercado Libre and Emi Labs, I founded MindApp Terapia because I saw a gap: mental health care that's both accessible and maintains rigorous safety standards. Technology can scale empathy, but only if we build it with conviction and EA values at the core.</p>
+            <p>I care deeply about AI safety, effective altruism, and building products that genuinely improve people's wellbeing. I'm not here to optimize metrics—I'm here to transform reality.</p>
+          </div>
+        </section>
+        <section id="experience">
+          <div class="mobile-tabs">
+            <div class="tab-buttons">
+<button data-tab="tab-about" class="tab-button active">Who I Am</button><button data-tab="tab-experience" class="tab-button">What I've Built</button><button data-tab="tab-academia" class="tab-button">Academia &amp; Community</button>            </div>
+          </div>
+          <div>
+            <div id="tab-about" class="tab-content active">
+              <p>I'm not your typical engineer. I build things that matter.</p>
+              <p>After years in ML and data science at companies like Mercado Libre and Emi Labs, I founded MindApp Terapia because I saw a gap: mental health care that's both accessible and maintains rigorous safety standards. Technology can scale empathy, but only if we build it with conviction and EA values at the core.</p>
+              <p>I care deeply about AI safety, effective altruism, and building products that genuinely improve people's wellbeing. I'm not here to optimize metrics—I'm here to transform reality.</p>
+            </div>
+            <div id="tab-experience" class="tab-content">
+              <div class="job experience-card">
+                <div class="job-header">
+                  <div class="job-title-row">
+                    <h4>MindApp Terapia</h4>
+<span class="job-separator"> • </span><span class="job-title">Co-Founder &amp; CEO</span>                  </div>
+                  <p class="job-date">Jan 2023 — Present</p>
+                </div>
+                <ul class="job-bullets">
+                  <li>[Placeholder: Built therapy platform serving X users]</li>
+                  <li>[Placeholder: Developed safety protocols for mental health at scale]</li>
+                  <li>[Placeholder: Technical achievement about ML/matching/scale]</li>
+                  <li>[Placeholder: Impact on user wellbeing metrics]</li>
+                </ul>
+              </div>
+              <div class="job experience-card">
+                <div class="job-header">
+                  <div class="job-title-row">
+                    <h4>Startup Exploration</h4>
+<span class="job-separator"> • </span><span class="job-title">Independent</span>                  </div>
+                  <p class="job-date">2022</p>
+                </div>
+                <p class="job-description">[Placeholder: Evaluated multiple startup opportunities including fintech and digital health platforms. This exploration period informed my decision to focus on mental health accessibility and safety—leading to MindApp's founding.]</p>
+              </div>
+              <div class="job experience-card">
+                <div class="job-header">
+                  <div class="job-title-row">
+                    <h4>Emi Labs</h4>
+<span class="job-separator"> • </span><span class="job-title">Sr Machine Learning Engineer</span>                  </div>
+                  <p class="job-date">Oct 2019 — Jan 2022</p>
+                </div>
+                <ul class="job-bullets">
+                  <li>Built Emi, an NLP chatbot handling thousands of recruitment conversations with empathy at scale</li>
+                  <li>Designed data architecture prioritizing privacy and security for sensitive candidate information</li>
+                  <li>Scaled system to handle interview scheduling and recruitment workflows for multiple clients</li>
+                </ul>
+              </div>
+              <div class="job experience-card">
+                <div class="job-header">
+                  <div class="job-title-row">
+                    <h4>Mercado Libre</h4>
+<span class="job-separator"> • </span><span class="job-title">Data Scientist (Junior → Senior)</span>                  </div>
+                  <p class="job-date">Dec 2016 — Oct 2019</p>
+                </div>
+                <ul class="job-bullets">
+                  <li>Built recommender systems using collaborative filtering, serving millions of users daily</li>
+                  <li>Developed fraud prevention models (CV + NLP) with 400% improvement over baseline</li>
+                  <li>Created resilient ETL pipelines and serving infrastructure at massive scale (Luigi + Hive + AWS)</li>
+                </ul>
+              </div>
+            </div>
+            <div id="tab-academia" class="tab-content">
+              <div class="job">
+                <div class="job-header">
+                  <div class="academia-title-col">
+                    <h4>NeurIPS Presentation</h4>
+                    <p class="job-title">ML Open Source Software Workshop</p>
+                  </div>
+                  <p class="job-date">2018</p>
+                </div>
+                <p class="job-description">[Placeholder: Presented PyLissom at NeurIPS - modeling computational maps of the visual cortex in PyTorch]</p>
+              </div>
+              <div class="job">
+                <div class="job-header">
+                  <div class="academia-title-col">
+                    <h4>Universidad de Buenos Aires</h4>
+                    <p class="job-title">Master's in Computer Science</p>
+                  </div>
+                  <p class="job-date">2013 — 2018</p>
+                </div>
+                <p class="job-description">Thesis: PyLissom - A tool for modeling computational maps of the visual cortex in PyTorch</p>
+              </div>
+              <div class="job">
+                <div class="job-header">
+                  <div class="academia-title-col">
+                    <h4>Data Science Argentina</h4>
+                    <p class="job-title">Meetup Organizer</p>
+                  </div>
+                </div>
+                <p class="job-description">[Placeholder: Organized community meetups bringing together data scientists and ML practitioners in Buenos Aires]</p>
+              </div>
+              <div class="job">
+                <div class="job-header">
+                  <div class="academia-title-col">
+                    <h4>EA @ Buenos Aires</h4>
+                    <p class="job-title">Member</p>
+                  </div>
+                </div>
+                <p class="job-description">[Placeholder: Active member of the Effective Altruism community in Buenos Aires, focused on AI safety and global health]</p>
+              </div>
+              <div class="job">
+                <div class="job-header">
+                  <div class="academia-title-col">
+                    <h4>Patch Adams Volunteer</h4>
+                    <p class="job-title">Volunteer</p>
+                  </div>
+                </div>
+                <p class="job-description">[Placeholder: Volunteered with Patch Adams organization, bringing joy and human connection to hospital patients]</p>
+              </div>
+            </div>
+            <div id="experienceContent" class="two-column">
+              <div class="column">
+                <h3>What I've Built</h3>
+                <div class="job experience-card">
+                  <div class="job-header">
+                    <div class="job-title-row">
+                      <h4>MindApp Terapia</h4>
+<span class="job-separator"> • </span><span class="job-title">Co-Founder &amp; CEO</span>                    </div>
+                    <p class="job-date">Jan 2023 — Present</p>
+                  </div>
+                  <ul class="job-bullets">
+                    <li>[Placeholder: Built therapy platform serving X users]</li>
+                    <li>[Placeholder: Developed safety protocols for mental health at scale]</li>
+                    <li>[Placeholder: Technical achievement about ML/matching/scale]</li>
+                    <li>[Placeholder: Impact on user wellbeing metrics]</li>
+                  </ul>
+                </div>
+                <div class="job experience-card">
+                  <div class="job-header">
+                    <div class="job-title-row">
+                      <h4>Startup Exploration</h4>
+<span class="job-separator"> • </span><span class="job-title">Independent</span>                    </div>
+                    <p class="job-date">2022</p>
+                  </div>
+                  <p class="job-description">[Placeholder: Evaluated multiple startup opportunities including fintech and digital health platforms. This exploration period informed my decision to focus on mental health accessibility and safety—leading to MindApp's founding.]</p>
+                </div>
+                <div class="job experience-card">
+                  <div class="job-header">
+                    <div class="job-title-row">
+                      <h4>Emi Labs</h4>
+<span class="job-separator"> • </span><span class="job-title">Sr Machine Learning Engineer</span>                    </div>
+                    <p class="job-date">Oct 2019 — Jan 2022</p>
+                  </div>
+                  <ul class="job-bullets">
+                    <li>Built Emi, an NLP chatbot handling thousands of recruitment conversations with empathy at scale</li>
+                    <li>Designed data architecture prioritizing privacy and security for sensitive candidate information</li>
+                    <li>Scaled system to handle interview scheduling and recruitment workflows for multiple clients</li>
+                  </ul>
+                </div>
+                <div class="job experience-card">
+                  <div class="job-header">
+                    <div class="job-title-row">
+                      <h4>Mercado Libre</h4>
+<span class="job-separator"> • </span><span class="job-title">Data Scientist (Junior → Senior)</span>                    </div>
+                    <p class="job-date">Dec 2016 — Oct 2019</p>
+                  </div>
+                  <ul class="job-bullets">
+                    <li>Built recommender systems using collaborative filtering, serving millions of users daily</li>
+                    <li>Developed fraud prevention models (CV + NLP) with 400% improvement over baseline</li>
+                    <li>Created resilient ETL pipelines and serving infrastructure at massive scale (Luigi + Hive + AWS)</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="column">
+                <h3>Academia &amp; Community</h3>
+                <div class="job">
+                  <div class="job-header">
+                    <div class="academia-title-col">
+                      <h4>NeurIPS Presentation</h4>
+                      <p class="job-title">ML Open Source Software Workshop</p>
+                    </div>
+                    <p class="job-date">2018</p>
+                  </div>
+                  <p class="job-description">[Placeholder: Presented PyLissom at NeurIPS - modeling computational maps of the visual cortex in PyTorch]</p>
+                </div>
+                <div class="job">
+                  <div class="job-header">
+                    <div class="academia-title-col">
+                      <h4>Universidad de Buenos Aires</h4>
+                      <p class="job-title">Master's in Computer Science</p>
+                    </div>
+                    <p class="job-date">2013 — 2018</p>
+                  </div>
+                  <p class="job-description">Thesis: PyLissom - A tool for modeling computational maps of the visual cortex in PyTorch</p>
+                </div>
+                <div class="job">
+                  <div class="job-header">
+                    <div class="academia-title-col">
+                      <h4>Data Science Argentina</h4>
+                      <p class="job-title">Meetup Organizer</p>
+                    </div>
+                  </div>
+                  <p class="job-description">[Placeholder: Organized community meetups bringing together data scientists and ML practitioners in Buenos Aires]</p>
+                </div>
+                <div class="job">
+                  <div class="job-header">
+                    <div class="academia-title-col">
+                      <h4>EA @ Buenos Aires</h4>
+                      <p class="job-title">Member</p>
+                    </div>
+                  </div>
+                  <p class="job-description">[Placeholder: Active member of the Effective Altruism community in Buenos Aires, focused on AI safety and global health]</p>
+                </div>
+                <div class="job">
+                  <div class="job-header">
+                    <div class="academia-title-col">
+                      <h4>Patch Adams Volunteer</h4>
+                      <p class="job-title">Volunteer</p>
+                    </div>
+                  </div>
+                  <p class="job-description">[Placeholder: Volunteered with Patch Adams organization, bringing joy and human connection to hospital patients]</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+</main>      <footer>
+        <p style="color: var(--text-secondary); font-size: 14px;">Theme: Midnight Slate</p>
+        <div class="footer-toggles">
+          <div style="display: flex; align-items: center; gap: 12px;">
+<span class="toggle-label">Nerdy Mode</span>            <div id="nerdyToggle" class="toggle-switch"></div>
+          </div>
+        </div>
+      </footer>
+    </div>
+<script>
+        // Dark Mode Toggle
+        function initDarkMode() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const html = document.documentElement;
+            
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            html.setAttribute('data-theme', savedTheme);
+            if (darkModeToggle) {
+                darkModeToggle.classList.toggle('active', savedTheme === 'dark');
+            }
+            
+            if (darkModeToggle) {
+                darkModeToggle.addEventListener('click', () => {
+                    const currentTheme = html.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    
+                    html.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    darkModeToggle.classList.toggle('active', newTheme === 'dark');
+                });
+            }
+        }
+
+        // Nerdy Mode Toggle
+        function initNerdyMode() {
+            const nerdyToggle = document.getElementById('nerdyToggle');
+            const aboutContent = document.getElementById('aboutContent');
+            const experienceContent = document.getElementById('experienceContent');
+            
+            const professionalAbout = aboutContent.innerHTML;
+            const professionalExperience = experienceContent.innerHTML;
+            
+            const nerdyAbout = `
+                <h3 style="margin-bottom: 15px;">→ THE REAL HERNÁN</h3>
+                <p>Beyond the code and startups, I'm obsessed with worlds—both real and imagined.</p>
+                <p><strong>Middle Earth shaped my worldview.</strong> LOTR taught me that small people can change history, that fellowship matters more than individual glory, and that the best adventures come from saying yes to the unexpected.</p>
+                <p><strong>Daft Punk is meditation for the digital age.</strong> Electronic music taught me that beauty emerges from systems, that constraints breed creativity, and that Random Access Memories can be more profound than any philosophy book.</p>
+                <p><strong>Meditation revealed the gap between map and territory.</strong> Sitting still for hours showed me that consciousness is weirder than any AI system we'll build. Also: most of what we think is "us" is just noise.</p>
+                <p>I believe the best builders are multidimensional humans, not optimization machines. You can't build something meaningful if you've never been moved by something meaningless.</p>
+            `;
+            
+            const nerdyExperience = `
+                <div class="nerdy-timeline">
+                    <h4>1990—2010: LOTR Dreaming</h4>
+                    <p class="timeline-description">Fell in love with world-building, epic quests, and the idea that hobbits—the smallest, most overlooked people—could save the world.</p>
+                </div>
+                <div class="nerdy-timeline">
+                    <h4>2010—2020: Science & Meditation Obsession</h4>
+                    <p class="timeline-description">Discovered computational neuroscience could explain consciousness. Meanwhile, sat still for hours trying to understand it from the inside.</p>
+                </div>
+                <div class="nerdy-timeline">
+                    <h4>2015—2018: Daft Punk Phase</h4>
+                    <p class="timeline-description">Random Access Memories changed everything. Realized electronic music isn't cold—it's the most human thing we've made.</p>
+                </div>
+                <div class="nerdy-timeline">
+                    <h4>2020—Present: Building for Impact</h4>
+                    <p class="timeline-description">Turned the existential angst into action. If reality is broken, let's fix it.</p>
+                </div>
+            `;
+            
+            let isNerdyMode = false;
+            
+            if (nerdyToggle) {
+                nerdyToggle.addEventListener('click', () => {
+                    isNerdyMode = !isNerdyMode;
+                    
+                    if (isNerdyMode) {
+                        aboutContent.innerHTML = nerdyAbout;
+                        experienceContent.innerHTML = nerdyExperience;
+                        nerdyToggle.classList.add('active');
+                    } else {
+                        aboutContent.innerHTML = professionalAbout;
+                        experienceContent.innerHTML = professionalExperience;
+                        nerdyToggle.classList.remove('active');
+                    }
+                    
+                    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+        }
+
+        // Mobile Tabs
+        function initMobileTabs() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.dataset.tab;
+                    
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    button.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
+            initNerdyMode();
+            initMobileTabs();
+        });
+    </script>  </body>
+</html>

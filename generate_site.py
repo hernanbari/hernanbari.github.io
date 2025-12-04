@@ -1009,7 +1009,11 @@ def generate_page(theme_key):
 if __name__ == "__main__":
     for theme_key in THEMES.keys():
         html_content = to_xml(generate_page(theme_key))
-        filename = f"design-{theme_key}.html"
+        # Use index.html for slate_blue (main theme for GitHub Pages)
+        if theme_key == "slate_blue":
+            filename = "index.html"
+        else:
+            filename = f"design-{theme_key}.html"
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(f"<!DOCTYPE html>\n{html_content}")
         print(f"✅ Generated {filename}")
