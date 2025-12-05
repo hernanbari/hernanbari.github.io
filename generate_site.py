@@ -726,6 +726,45 @@ def create_script():
             }
         }
 
+        // Nerdy Mode Toggle
+        function initNerdyMode() {
+            const toggle = document.getElementById('nerdyToggle');
+            const aboutDiv = document.getElementById('aboutContent');
+            const expColumn = document.querySelector('.two-column');
+            
+            if (!toggle || !aboutDiv || !expColumn) return;
+            
+            // Store originals
+            const origAbout = aboutDiv.innerHTML;
+            const origExp = expColumn.innerHTML;
+            let isNerdy = false;
+            
+            toggle.addEventListener('click', () => {
+                isNerdy = !isNerdy;
+                
+                if (isNerdy) {
+                    // Nerdy mode ON - fun content
+                    aboutDiv.innerHTML = '<h3 style="margin-bottom: 15px;">→ THE REAL HERNÁN</h3><p>Beyond the code and startups, I\\'m obsessed with worlds—both real and imagined.</p><p><strong>Middle Earth shaped my worldview.</strong> LOTR taught me that small people can change history, that fellowship matters more than individual glory, and that the best adventures come from saying yes to the unexpected.</p><p><strong>Daft Punk is meditation for the digital age.</strong> Electronic music taught me that beauty emerges from systems, that constraints breed creativity, and that Random Access Memories can be more profound than any philosophy book.</p><p><strong>Meditation revealed the gap between map and territory.</strong> Sitting still for hours showed me that consciousness is weirder than any AI system we\\'ll build. Also: most of what we think is "us" is just noise.</p><p>I believe the best builders are multidimensional humans, not optimization machines. You can\\'t build something meaningful if you\\'ve never been moved by something meaningless.</p>';
+                    
+                    expColumn.innerHTML = '<div class="column" style="grid-column: 1 / -1;"><h3>→ A DIFFERENT TIMELINE</h3>' +
+                        '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px; margin-bottom: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">1990—2010: LOTR Dreaming</h4><p>Fell in love with world-building, epic quests, and the idea that hobbits—the smallest, most overlooked people—could save the world.</p></div>' +
+                        '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px; margin-bottom: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">2010—2020: Science & Meditation Obsession</h4><p>Discovered computational neuroscience could explain consciousness. Meanwhile, sat still for hours trying to understand it from the inside.</p></div>' +
+                        '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px; margin-bottom: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">2015—2018: Daft Punk Phase</h4><p>Random Access Memories changed everything. Realized electronic music isn\\'t cold—it\\'s the most human thing we\\'ve made.</p></div>' +
+                        '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">2020—Present: Building for Impact</h4><p>Turned the existential angst into action. If reality is broken, let\\'s fix it.</p></div>' +
+                        '</div>';
+                    
+                    toggle.classList.add('active');
+                } else {
+                    // Nerdy mode OFF - restore
+                    aboutDiv.innerHTML = origAbout;
+                    expColumn.innerHTML = origExp;
+                    toggle.classList.remove('active');
+                }
+                
+                document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
         // Mobile Tabs
         function initMobileTabs() {
             const tabButtons = document.querySelectorAll('.tab-button');
@@ -746,6 +785,7 @@ def create_script():
 
         document.addEventListener('DOMContentLoaded', () => {
             initDarkMode();
+            initNerdyMode();
             initMobileTabs();
         });
     """)
@@ -929,6 +969,14 @@ def generate_page(theme_key):
                 # Footer with toggles
                 Footer(
                     P(f"Theme: {THEMES[theme_key]['name']}", style="color: var(--text-secondary); font-size: 14px;"),
+                    Div(
+                        Div(
+                            Span("Nerdy Mode", cls="toggle-label"),
+                            Div(cls="toggle-switch", id="nerdyToggle"),
+                            style="display: flex; align-items: center; gap: 12px;"
+                        ),
+                        cls="footer-toggles"
+                    ),
                 ),
                 
                 cls="container"
