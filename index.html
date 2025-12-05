@@ -809,11 +809,6 @@ Building mental health tech that <span class="tagline-emphasis">scales empathy</
         </section>
 </main>      <footer>
         <p style="color: var(--text-secondary); font-size: 14px;">Theme: Midnight Slate</p>
-        <div class="footer-toggles">
-          <div style="display: flex; align-items: center; gap: 12px;">
-<span class="toggle-label">Nerdy Mode</span>            <div id="nerdyToggle" class="toggle-switch"></div>
-          </div>
-        </div>
       </footer>
     </div>
 <script>
@@ -840,64 +835,6 @@ Building mental health tech that <span class="tagline-emphasis">scales empathy</
             }
         }
 
-        // Nerdy Mode Toggle
-        function initNerdyMode() {
-            const nerdyToggle = document.getElementById('nerdyToggle');
-            const aboutContent = document.getElementById('aboutContent');
-            const experienceContent = document.getElementById('experienceContent');
-            
-            const professionalAbout = aboutContent.innerHTML;
-            const professionalExperience = experienceContent.innerHTML;
-            
-            const nerdyAbout = `
-                <h3 style="margin-bottom: 15px;">→ THE REAL HERNÁN</h3>
-                <p>Beyond the code and startups, I'm obsessed with worlds—both real and imagined.</p>
-                <p><strong>Middle Earth shaped my worldview.</strong> LOTR taught me that small people can change history, that fellowship matters more than individual glory, and that the best adventures come from saying yes to the unexpected.</p>
-                <p><strong>Daft Punk is meditation for the digital age.</strong> Electronic music taught me that beauty emerges from systems, that constraints breed creativity, and that Random Access Memories can be more profound than any philosophy book.</p>
-                <p><strong>Meditation revealed the gap between map and territory.</strong> Sitting still for hours showed me that consciousness is weirder than any AI system we'll build. Also: most of what we think is "us" is just noise.</p>
-                <p>I believe the best builders are multidimensional humans, not optimization machines. You can't build something meaningful if you've never been moved by something meaningless.</p>
-            `;
-            
-            const nerdyExperience = `
-                <div class="nerdy-timeline">
-                    <h4>1990—2010: LOTR Dreaming</h4>
-                    <p class="timeline-description">Fell in love with world-building, epic quests, and the idea that hobbits—the smallest, most overlooked people—could save the world.</p>
-                </div>
-                <div class="nerdy-timeline">
-                    <h4>2010—2020: Science & Meditation Obsession</h4>
-                    <p class="timeline-description">Discovered computational neuroscience could explain consciousness. Meanwhile, sat still for hours trying to understand it from the inside.</p>
-                </div>
-                <div class="nerdy-timeline">
-                    <h4>2015—2018: Daft Punk Phase</h4>
-                    <p class="timeline-description">Random Access Memories changed everything. Realized electronic music isn't cold—it's the most human thing we've made.</p>
-                </div>
-                <div class="nerdy-timeline">
-                    <h4>2020—Present: Building for Impact</h4>
-                    <p class="timeline-description">Turned the existential angst into action. If reality is broken, let's fix it.</p>
-                </div>
-            `;
-            
-            let isNerdyMode = false;
-            
-            if (nerdyToggle) {
-                nerdyToggle.addEventListener('click', () => {
-                    isNerdyMode = !isNerdyMode;
-                    
-                    if (isNerdyMode) {
-                        aboutContent.innerHTML = nerdyAbout;
-                        experienceContent.innerHTML = nerdyExperience;
-                        nerdyToggle.classList.add('active');
-                    } else {
-                        aboutContent.innerHTML = professionalAbout;
-                        experienceContent.innerHTML = professionalExperience;
-                        nerdyToggle.classList.remove('active');
-                    }
-                    
-                    document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
-                });
-            }
-        }
-
         // Mobile Tabs
         function initMobileTabs() {
             const tabButtons = document.querySelectorAll('.tab-button');
@@ -918,7 +855,6 @@ Building mental health tech that <span class="tagline-emphasis">scales empathy</
 
         document.addEventListener('DOMContentLoaded', () => {
             initDarkMode();
-            initNerdyMode();
             initMobileTabs();
         });
     </script>  </body>
