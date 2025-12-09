@@ -145,8 +145,8 @@ THEMES = {
 CONTENT = {
     "name": "HERNÁN BARIJHOFF",
     "subtitle": "MS CS | MLE | EA | Founder",
-    "tagline": "Building mental health tech that ",
-    "tagline_emphasis": "scales empathy",
+    "tagline": "Building Mental Health tech that ",
+    "tagline_emphasis": "scales",
     "email": "hernanbarijhoff@gmail.com",
     "linkedin_url": "https://www.linkedin.com/in/hernanbarijhoff/",
     "website_url": "https://mindappterapia.com",
@@ -167,40 +167,46 @@ CONTENT = {
     
     "experience": [
         {
-            "company": "MindApp Terapia",
-            "title": "Co-Founder & CEO",
+            "company": "MindApp Therapy",
+            "title": "Founder & CEO",
             "date": "Jan 2023 — Present",
             "bullets": [
-                "[Placeholder: Built therapy platform serving X users]",
-                "[Placeholder: Developed safety protocols for mental health at scale]",
-                "[Placeholder: Technical achievement about ML/matching/scale]",
-                "[Placeholder: Impact on user wellbeing metrics]"
+                "Founded and built bootstrapped, profitable online therapy platform serving 380 patients/month at peak across Spain, USA, and Latin America with network of 22 therapists",
+                "Designed evidence-based protocols and policies through iterative real-world testing",
+                "Balanced therapy access, clinical quality, therapist autonomy, and business sustainability while growing therapist network through structured vetting and patient retention monitoring",
+                "Hired and managed 4-person customer service team",
+                "Built platform end-to-end using AWS, FastAPI, WhatsApp Platform, and Google/Meta ads"
             ]
         },
         {
             "company": "Startup Exploration",
-            "title": "Independent",
+            "title": "Independent Research",
             "date": "2022",
-            "description": "[Placeholder: Evaluated multiple startup opportunities including fintech and digital health platforms. This exploration period informed my decision to focus on mental health accessibility and safety—leading to MindApp's founding.]"
-        },
-        {
-            "company": "Emi Labs",
-            "title": "Sr Machine Learning Engineer",
-            "date": "Oct 2019 — Jan 2022",
             "bullets": [
-                "Built Emi, an NLP chatbot handling thousands of recruitment conversations with empathy at scale",
-                "Designed data architecture prioritizing privacy and security for sensitive candidate information",
-                "Scaled system to handle interview scheduling and recruitment workflows for multiple clients"
+                "WeSex (SexEdTech): Ran structured 2-month cofounder trial; identified product was pre-PMF",
+                "Adopted EA cause prioritization framework, pivoted to mental health based on tractability and personal fit",
+                "Stenox (Blockchain): Built bot and investment data analytics product; reached YC interview stage"
             ]
         },
         {
-            "company": "Mercado Libre",
-            "title": "Data Scientist (Junior → Senior)",
+            "company": "Emi Labs (YC19)",
+            "title": "Sr. Machine Learning Engineer",
+            "date": "Oct 2019 — Jan 2022",
+            "bullets": [
+                "Led NLP pipeline design and implementation for Chatbot (Rasa), with the mission of improving employment access for frontline workers",
+                "Coordinated company-wide knowledge-sharing talks with both internal and external speakers",
+                "Shaped product direction as fifth employee, including pragmatic scope decisions (e.g., eliminating unnecessary NLP classification when simpler solutions existed)"
+            ]
+        },
+        {
+            "company": "Mercado Libre (AMZ of Latam)",
+            "title": "Data Scientist (Jr → Sr)",
             "date": "Dec 2016 — Oct 2019",
             "bullets": [
-                "Built recommender systems using collaborative filtering, serving millions of users daily",
-                "Developed fraud prevention models (CV + NLP) with 400% improvement over baseline",
-                "Created resilient ETL pipelines and serving infrastructure at massive scale (Luigi + Hive + AWS)"
+                "Developed Collaborative Filtering Recommendation Models for millions of users (meta-prod2vec)",
+                "Built ETL pipelines processing billions of events daily and implemented monitoring infra",
+                "Built Sales KPIs reporting for CTR, conversion, attribution and coverage metrics",
+                "Developed deployment infra at scale"
             ]
         }
     ],
@@ -210,7 +216,7 @@ CONTENT = {
             "title": "NeurIPS Presentation",
             "subtitle": "ML Open Source Software Workshop",
             "date": "2018",
-            "description": "[Placeholder: Presented PyLissom at NeurIPS - modeling computational maps of the visual cortex in PyTorch]"
+            "description": "Presented Ms. Thesis"
         },
         {
             "title": "Universidad de Buenos Aires",
@@ -220,21 +226,21 @@ CONTENT = {
         },
         {
             "title": "Data Science Argentina",
-            "subtitle": "Meetup Organizer",
+            "subtitle": "Meetup Speaker",
             "date": "",
-            "description": "[Placeholder: Organized community meetups bringing together data scientists and ML practitioners in Buenos Aires]"
+            "description": ""
         },
         {
             "title": "EA @ Buenos Aires",
-            "subtitle": "Member",
+            "subtitle": "Regular Participant",
             "date": "",
-            "description": "[Placeholder: Active member of the Effective Altruism community in Buenos Aires, focused on AI safety and global health]"
+            "description": ""
         },
         {
             "title": "Patch Adams Volunteer",
-            "subtitle": "Volunteer",
+            "subtitle": "Hospital Clown",
             "date": "",
-            "description": "[Placeholder: Volunteered with Patch Adams organization, bringing joy and human connection to hospital patients]"
+            "description": ""
         }
     ]
 }
@@ -852,7 +858,7 @@ def create_script():
             let isNerdy = false;
             
             // Fun content
-            const nerdyAboutHTML = '<h3 style="margin-bottom: 15px;">→ THE REAL HERNÁN</h3><p>Beyond the code and startups, I\\'m obsessed with worlds—both real and imagined.</p><p><strong>Middle Earth shaped my worldview.</strong> LOTR taught me that small people can change history, that fellowship matters more than individual glory, and that the best adventures come from saying yes to the unexpected.</p><p><strong>Daft Punk is meditation for the digital age.</strong> Electronic music taught me that beauty emerges from systems, that constraints breed creativity, and that Random Access Memories can be more profound than any philosophy book.</p><p><strong>Meditation revealed the gap between map and territory.</strong> Sitting still for hours showed me that consciousness is weirder than any AI system we\\'ll build. Also: most of what we think is "us" is just noise.</p><p>I believe the best builders are multidimensional humans, not optimization machines. You can\\'t build something meaningful if you\\'ve never been moved by something meaningless.</p>';
+            const nerdyAboutHTML = '<h3 style="margin-bottom: 15px;">→ BEHIND THE SCIENTIST</h3><p>I\\'m obsessed with worlds—both real and imagined.</p><p><strong>Middle Earth shaped my worldview.</strong> LOTR taught me that small people can change history, that fellowship matters more than individual glory, and that the best adventures come from saying yes to the unexpected.</p><p><strong>Music taught me about the joy of everyday life.</strong> Music is my lifeline, daft punk my mantra. It’s what keeps me connected to people</p><p><strong>Meditation revealed the gap between map and territory.</strong> Sitting still for hours showed me that consciousness is weirder than any system we built, maybe AI can help us with that. Also: most of what we think is “I” is just noise.</p><p><strong>Science is what reminds me to keep wondering.</strong> Space, stars, physics, are the fields that I would love to study in an infinite-time universe.</p>';
             
             const nerdyTimelineHTML = '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px; margin-bottom: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">1990—2010: LOTR Dreaming</h4><p>Fell in love with world-building, epic quests, and the idea that hobbits—the smallest, most overlooked people—could save the world.</p></div>' +
                 '<div class="job" style="border-left: 3px solid var(--accent-color); padding-left: 20px; margin-bottom: 20px;"><h4 style="color: var(--accent-color); margin-bottom: 8px;">2010—2020: Science & Meditation Obsession</h4><p>Discovered computational neuroscience could explain consciousness. Meanwhile, sat still for hours trying to understand it from the inside.</p></div>' +
