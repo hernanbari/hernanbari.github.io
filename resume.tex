@@ -1,0 +1,106 @@
+\documentclass[11pt,a4paper]{article}
+
+% Packages
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% Formatting
+\pagestyle{empty}
+\setlist[itemize]{leftmargin=*, nosep, itemsep=3pt, after=\vspace{0.5\baselineskip}}
+\titleformat{\section}{\large\bfseries}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+
+% Custom commands
+\newcommand{\resumeSubheading}[2]{
+  \vspace{2pt}\noindent
+  \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+    \textbf{#1} & \textit{#2} \\
+  \end{tabular*}
+  \vspace{-6pt}
+}
+
+\newcommand{\resumeItem}[1]{
+  \item \small{#1}
+}
+
+\begin{document}
+
+% Header
+\begin{center}
+    {\Huge \textbf{Hernan Barijhoff (Ms.CS)}} \\
+    \vspace{4pt}
+    \href{mailto:hernanbarijhoff@gmail.com}{hernanbarijhoff@gmail.com} $|$ 
+    \href{https://www.linkedin.com/in/hernanbarijhoff}{linkedin.com/in/hernanbarijhoff} $|$ 
+    +5491158088240
+\end{center}
+
+% Experience
+\section*{Experience}
+
+\resumeSubheading
+  {MindApp Therapy -- Founder \& CEO}{Jan 2023 -- Present}
+\begin{itemize}
+  \resumeItem{Founded and built bootstrapped, profitable online therapy platform serving 380 patients/month at peak across Spain, USA, and Latin America, generating \$23k monthly revenue with network of 22 therapists}
+  \resumeItem{Designed evidence-based protocols and policies through iterative real-world testing, e.g.:
+    \begin{itemize}[nosep, after={}]
+      \item Systematic intake memo protocol for risk assessment
+      \item Escalation protocols for crisis situations requiring human intervention
+      \item New couples therapy intake procedure after identifying first-session failure pattern
+    \end{itemize}}
+  \resumeItem{Balanced therapy access, clinical quality, therapist autonomy, and business sustainability while growing therapist network through structured vetting and patient retention monitoring}
+  \resumeItem{Hired and managed 4-person customer service team}
+  \resumeItem{Built platform end-to-end using AWS, FastAPI, WhatsApp Platform, and Google/Meta ads}
+\end{itemize}
+
+\resumeSubheading
+  {Startup Problem Exploration -- Independent Research}{2022}
+\begin{itemize}
+  \resumeItem{WeSex (SexEdTech): Ran structured 2-month cofounder trial; identified product was pre-PMF (retention without monetization path, taboo limited organic growth)}
+  \resumeItem{Adopted EA cause prioritization framework, pivoted to mental health based on tractability and personal fit}
+  \resumeItem{Stenox (Blockchain): Built bot and investment data analytics product; reached interview stage at YC}
+\end{itemize}
+
+\resumeSubheading
+  {Emi Labs (YC19) -- Sr. Machine Learning Engineer}{Oct 2019 -- Jan 2022}
+\begin{itemize}
+  \resumeItem{Led NLP pipeline design and implementation for Chatbot, with the mission of improving employment access for frontline workers}
+  \resumeItem{Coordinated company-wide knowledge-sharing talks with both internal and external speakers}
+  \resumeItem{Shaped product direction as fifth employee, including pragmatic scope decisions (e.g., eliminating unnecessary NLP classification when simpler solutions existed)}
+\end{itemize}
+
+\resumeSubheading
+  {Mercado Libre (AMZ of Latam) -- Data Scientist (Jr → Sr)}{Dec 2016 -- Oct 2019}
+\begin{itemize}
+  \resumeItem{Developed Collaborative Filtering Recommendation Models for millions of users (meta-prod2vec, clustering)}
+  \resumeItem{Built ETL pipelines processing billions of events daily and implemented monitoring infra (Luigi, Hive, Datadog)}
+  \resumeItem{Built Sales KPIs reporting for CTR, conversion, attribution and coverage metrics (Tableau, Presto)}
+  \resumeItem{Developed deployment infra at scale (AWS, Apache, Redis)}
+\end{itemize}
+
+% Education
+\section*{Education}
+\resumeSubheading
+  {Buenos Aires University -- MS \& BS Degree in Computer Science}{2013 -- 2018}
+\begin{itemize}
+  \resumeItem{Thesis: "PyLissom: A tool for modeling computational maps of the visual cortex in PyTorch"}
+\end{itemize}
+
+% Awards
+\section*{Awards \& Recognition}
+\begin{itemize}
+  \resumeItem{\textbf{NeurIPS 2018} | Workshop ML Open Source Software - presentation on MS thesis work}
+  \resumeItem{\textbf{Mercado Libre Data Challenge 2018} - Won competition for product categorization based on listing titles}
+\end{itemize}
+
+% Community
+\section*{Community Involvement}
+\begin{itemize}
+  \resumeItem{\textbf{EA Buenos Aires + AI Safety Group} - Regular Participant}
+  \resumeItem{\textbf{Data Science Argentina Meetups} - Speaker}
+  \resumeItem{\textbf{Patch Adams Buenos Aires} - Hospital Clowns Volunteer}
+\end{itemize}
+
+\end{document}

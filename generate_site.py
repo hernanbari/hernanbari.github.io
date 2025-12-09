@@ -4,36 +4,132 @@ Run this to generate all HTML files
 """
 
 from fasthtml.common import *
+import re
+
+
+
+def format_text(text):
+    """
+    Convert markdown-style formatting to FastHTML components
+    Single:
+    _word_ -> italic (Em)
+    *word* -> bold (Strong)  
+    /word/ -> underline (U)
+    
+    Double (nested):
+    _*word*_ -> italic + bold
+    *_word_* -> bold + italic
+    /_word_/ -> underline + italic
+    /*word*/ -> underline + bold
+    _/word/_ -> italic + underline
+    */word/* -> bold + underline
+    
+    Triple (all three):
+    _*/word/*_ -> italic + bold + underline
+    _/*word*/_ -> italic + underline + bold
+    *_/word/_* -> bold + italic + underline
+    */_word_/* -> bold + underline + italic
+    /_*word*_/ -> underline + italic + bold
+    /*_word_*/ -> underline + bold + italic
+    """
+    if not text or not isinstance(text, str):
+        return [text] if text else []
+    
+    # Pattern matches: triple nesting (3 chars), double nesting (2 chars), then single (1 char)
+    # Order matters: check longest patterns first
+    pattern = r'(_\*/[^/]+/\*_|_/\*[^*]+\*/_|\*_/[^/]+/_\*|\*/_[^_]+_/\*|/_\*[^*]+\*_/|/\*_[^_]+_\*/|_\*[^*]+\*_|\*_[^_]+_\*|/_[^_]+_/|/\*[^*]+\*/|_/[^/]+/_|\*/[^/]+/\*|_[^_]+_|\*[^*]+\*|/[^/]+/)'
+    parts = re.split(pattern, text)
+    
+    result = []
+    for part in parts:
+        if not part:
+            continue
+        
+        # Triple nesting (3 markers)
+        if part.startswith('_*/') and part.endswith('/*_'):
+            # _*/text/*_ -> italic + bold + underline
+            result.append(Em(Strong(U(part[3:-3]))))
+        elif part.startswith('_/*') and part.endswith('*/_'):
+            # _/*text*/_ -> italic + underline + bold
+            result.append(Em(U(Strong(part[3:-3]))))
+        elif part.startswith('*_/') and part.endswith('/_*'):
+            # *_/text/_* -> bold + italic + underline
+            result.append(Strong(Em(U(part[3:-3]))))
+        elif part.startswith('*/_') and part.endswith('_/*'):
+            # */_text_/* -> bold + underline + italic
+            result.append(Strong(U(Em(part[3:-3]))))
+        elif part.startswith('/_*') and part.endswith('*_/'):
+            # /_*text*_/ -> underline + italic + bold
+            result.append(U(Em(Strong(part[3:-3]))))
+        elif part.startswith('/*_') and part.endswith('_*/'):
+            # /*_text_*/ -> underline + bold + italic
+            result.append(U(Strong(Em(part[3:-3]))))
+        # Double nesting (2 markers)
+        elif part.startswith('_*') and part.endswith('*_'):
+            # _*text*_ -> italic + bold
+            result.append(Em(Strong(part[2:-2])))
+        elif part.startswith('*_') and part.endswith('_*'):
+            # *_text_* -> bold + italic
+            result.append(Strong(Em(part[2:-2])))
+        elif part.startswith('/_') and part.endswith('_/'):
+            # /_text_/ -> underline + italic
+            result.append(U(Em(part[2:-2])))
+        elif part.startswith('/*') and part.endswith('*/'):
+            # /*text*/ -> underline + bold
+            result.append(U(Strong(part[2:-2])))
+        elif part.startswith('_/') and part.endswith('/_'):
+            # _/text/_ -> italic + underline
+            result.append(Em(U(part[2:-2])))
+        elif part.startswith('*/') and part.endswith('/*'):
+            # */text/* -> bold + underline
+            result.append(Strong(U(part[2:-2])))
+        # Single markers
+        elif part.startswith('_') and part.endswith('_'):
+            # _text_ -> italic
+            result.append(Em(part[1:-1]))
+        elif part.startswith('*') and part.endswith('*'):
+            # *text* -> bold
+            result.append(Strong(part[1:-1]))
+        elif part.startswith('/') and part.endswith('/'):
+            # /text/ -> underline
+            result.append(U(part[1:-1]))
+        else:
+            # Plain text
+            result.append(part)
+    
+    return result
+
+
 
 # Color themes with pastel colors and different dark backgrounds
 THEMES = {
-    "lavender": {
-        "name": "Lavender Dream",
-        "bg_dark": "#1a1625",
-        "bg_secondary_dark": "#241d30",
-        "accent_dark": "#b8a4d4",
-        "accent_hover_dark": "#9d84c2",
-        "bg_light": "#faf9fc",
-        "accent_light": "#7c5fb8",
-    },
-    "sage": {
-        "name": "Sage Garden",
-        "bg_dark": "#1a1f1a",
-        "bg_secondary_dark": "#242b24",
-        "accent_dark": "#a8c9a8",
-        "accent_hover_dark": "#8eb38e",
-        "bg_light": "#f8faf8",
-        "accent_light": "#5a8c5a",
-    },
-    "peach": {
-        "name": "Warm Peach",
-        "bg_dark": "#221a18",
-        "bg_secondary_dark": "#2d2320",
-        "accent_dark": "#e8b4a0",
-        "accent_hover_dark": "#d49980",
-        "bg_light": "#fdf9f7",
-        "accent_light": "#c17a5a",
-    },
+    # "lavender": {
+    #     "name": "Lavender Dream",
+    #     "bg_dark": "#1a1625",
+    #     "bg_secondary_dark": "#241d30",
+    #     "accent_dark": "#b8a4d4",
+    #     "accent_hover_dark": "#9d84c2",
+    #     "bg_light": "#faf9fc",
+    #     "accent_light": "#7c5fb8",
+    # },
+    # "sage": {
+    #     "name": "Sage Garden",
+    #     "bg_dark": "#1a1f1a",
+    #     "bg_secondary_dark": "#242b24",
+    #     "accent_dark": "#a8c9a8",
+    #     "accent_hover_dark": "#8eb38e",
+    #     "bg_light": "#f8faf8",
+    #     "accent_light": "#5a8c5a",
+    # },
+    # "peach": {
+    #     "name": "Warm Peach",
+    #     "bg_dark": "#221a18",
+    #     "bg_secondary_dark": "#2d2320",
+    #     "accent_dark": "#e8b4a0",
+    #     "accent_hover_dark": "#d49980",
+    #     "bg_light": "#fdf9f7",
+    #     "accent_light": "#c17a5a",
+    # },
     "slate_blue": {
         "name": "Midnight Slate",
         "bg_dark": "#1a1d24",
@@ -56,11 +152,16 @@ CONTENT = {
     "website_url": "https://mindappterapia.com",
     
     "about": {
-        "title": "Who I Am",
+        "title": "What I Think",
         "paragraphs": [
-            "I'm not your typical engineer. I build things that matter.",
-            "After years in ML and data science at companies like Mercado Libre and Emi Labs, I founded MindApp Terapia because I saw a gap: mental health care that's both accessible and maintains rigorous safety standards. Technology can scale empathy, but only if we build it with conviction and EA values at the core.",
-            "I care deeply about AI safety, effective altruism, and building products that genuinely improve people's wellbeing. I'm not here to optimize metrics—I'm here to transform reality."
+
+            "I've experienced first hand the transformative power of therapy, but I've known so many people who didn't have the same experience, or didn't even try it because of bias or stigma. This frustrated me, and I started to wonder, what was wrong? The therapists' abilities? The process itself? Access? Society?",
+            "While researching societal problems, I came across the EA movement, and in particular, the work of a philosopher, Michael Plant, who proposes that /_*happiness*_/ should be the metric we should strive for, not 'years-lived' or 'lives-saved'. _What's the point of a life saved but riddled with suffering?_",
+            "At the same time, I've always wanted to build a startup, because I think it has the biggest impact of any endeavor you could pursue, if you can actually pull it off. ",
+            "My gut feeling was that it was worth diving deep into Mental Health, specifically /*facilitating access to quality therapy*/. That's how my current project MindApp started. I've learned things you can only learn by doing: how to balance patient needs with business sustainability, how edge cases reveal gaps in your initial thinking, when automated systems should escalate to human judgment. Being a founder taught me many different things — *about people, product, frustration, and purpose*. Invaluable learnings.  The most meaningful moments for me have been when a patient says *'thank you, you’ve helped me a lot .'*",
+            "Technology for me was always a means to an end. I studied and worked in AI because I understood early on that it was *one of the most powerful tools for creating real change in people's lives*. Before MindApp, I spent years in the startup ecosystem, learning as much as I could, including time at an early-stage YC company (EmiLabsYC19) building NLP chatbots to improve job access for frontline workers.",
+            "That's also why /I'm following AGI progress closely/ and participating in AI safety community events in Buenos Aires. *The timeline for world-changing AI is shorter than most people assume*, and Mental Health will be among the domains deeply reshaped—whether through AI-assisted therapy, companionship relationships, or risks we're only beginning to understand. I want to help ensure that transformation improves rather than undermines human wellbeing."
+            
         ]
     },
     
@@ -354,13 +455,13 @@ def create_style(theme_key):
         }}
 
         /* About Section */
-        #aboutContent p {{
+        .about-content p {{
             font-size: 15px;
             margin-bottom: 12px;
             line-height: 1.6;
         }}
 
-        #aboutContent p:first-child {{
+        .about-content p:first-child {{
             font-size: 16px;
             font-weight: 600;
             color: var(--accent-color);
@@ -648,6 +749,10 @@ def create_style(theme_key):
                 order: 2;
             }}
 
+            .hero-content {{
+                text-align: center;
+            }}
+
             .toggle-container {{
                 display: none;
             }}
@@ -729,7 +834,7 @@ def create_script():
         // Nerdy Mode Toggle
         function initNerdyMode() {
             const toggle = document.getElementById('nerdyToggle');
-            const aboutDiv = document.getElementById('aboutContent');
+            const aboutDiv = document.querySelector('.about-content'); // Changed to class selector
             const expColumn = document.querySelector('.two-column');
             
             // Mobile tabs
@@ -925,8 +1030,8 @@ def generate_page(theme_key):
                     Section(
                         H2(CONTENT["about"]["title"], cls="section-header"),
                         Div(
-                            *[P(para) for para in CONTENT["about"]["paragraphs"]],
-                            id="aboutContent"
+                            *[P(*format_text(para)) for para in CONTENT["about"]["paragraphs"]],
+                            cls="about-content"
                         ),
                         id="about"
                     ),
@@ -936,7 +1041,7 @@ def generate_page(theme_key):
                         # Mobile Tabs
                         Div(
                             Div(
-                                Button("Who I Am", cls="tab-button active", **{"data-tab": "tab-about"}),
+                                Button("What I Think", cls="tab-button active", **{"data-tab": "tab-about"}),
                                 Button("What I've Built", cls="tab-button", **{"data-tab": "tab-experience"}),
                                 Button("Academia & Community", cls="tab-button", **{"data-tab": "tab-academia"}),
                                 cls="tab-buttons"
@@ -947,8 +1052,8 @@ def generate_page(theme_key):
                         Div(
                             # Mobile Tab Content - Who I Am
                             Div(
-                                *[P(para) for para in CONTENT["about"]["paragraphs"]],
-                                cls="tab-content active",
+                                *[P(*format_text(para)) for para in CONTENT["about"]["paragraphs"]],
+                                cls="tab-content active about-content",
                                 id="tab-about"
                             ),
                             
