@@ -147,7 +147,7 @@ CONTENT = {
     "subtitle": "MS CS | MLE | EA | Founder",
     "tagline": "Building Mental Health tech that ",
     "tagline_emphasis": "scales",
-    "email": "hernanbarijhoff@gmail.com",
+    "email": "my_fullname@gmail.com",
     "linkedin_url": "https://www.linkedin.com/in/hernanbarijhoff/",
     "website_url": "https://mindappterapia.com",
     
